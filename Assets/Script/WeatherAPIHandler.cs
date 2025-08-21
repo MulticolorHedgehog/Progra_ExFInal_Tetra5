@@ -53,7 +53,7 @@ public class WeatherAPIHandler : MonoBehaviour
     {
         
         StartCoroutine(WeatherUpdate()); //Esta linea inicia la corrutina que se encargara de hacer la solicitud a la web
-        StartCoroutine(SelectCity());
+        StartCoroutine(SelectCity(50.5f));
     }
 
     IEnumerator WeatherUpdate()
@@ -170,7 +170,7 @@ public class WeatherAPIHandler : MonoBehaviour
         return directonalLight.color;
     }
 
-    private IEnumerator SelectCity()
+    private IEnumerator SelectCity(float duration)
     {
         while (true)
         {
