@@ -266,7 +266,7 @@ public class PlayFabHANDLER : MonoBehaviour
         {
             GameObject obj = UnityEngine.Object.Instantiate(userScoreAreaPrefab, leaderboardParent);
             TextMeshProUGUI component = obj.transform.Find("Username").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI component2 = obj.transform.Find("Score").GetComponent<TextMeshProUGUI>();
+            TextMeshProUGUI component2 = obj.transform.Find("High Score").GetComponent<TextMeshProUGUI>();
             Image component3 = obj.transform.Find("Image").GetComponent<Image>();
             if (component != null)
             {
