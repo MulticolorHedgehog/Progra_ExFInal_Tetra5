@@ -50,7 +50,7 @@ public class PlayFabHANDLER : MonoBehaviour
         }
         if(string.IsNullOrEmpty(devKey))
         {
-            PlayFabSettings.DeveloperSecretKey = devKey;
+            //PlayFabSettings.DeveloperSecretKey = devKey;
             //Por alguna extraña razon esta linea de codigo si la dejo activa provoca este error
             //'PlayFabSettings' does not contain a definition for 'DeveloperSecretKey'
 
@@ -135,6 +135,37 @@ public class PlayFabHANDLER : MonoBehaviour
             Sprite playerImage = Sprite.Create(downloadHandler.texture, new Rect(0.0f, 0.0f, downloadHandler.texture.width, downloadHandler.texture.height), Vector2.zero);
             userAvatarImage.sprite = playerImage; // Asigno la imagen que consegui al componente de la UI
         }
+    }
+
+    private void GetPlayerAvatar(string playFabID, Image avatarImage)
+    {
+        PlayFabClientAPI.GetPlayerProfile(new GetPlayerProfileRequest
+        {
+            PlayFabId = playFabID,
+            ProfileConstraints = new PlayerProfileViewConstraints
+            {
+                ShowAvatarUrl = true
+            }
+        }, delegate (GetPlayerProfileResult result)
+        {
+            string avatarUrl = result.PlayerProfile.AvatarUrl;
+            StartCoroutine(DownloadAndSetAvatar(avatarUrl, avatarImage));
+        }, ErrorMessage);
+    }
+
+    private IEnumerator DownloadAndSetAvatar(string url, Image avatarImage)
+    {
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+        request.downloadHandler = new DownloadHandlerTexture();
+        yield return request.SendWebRequest();
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError(request.error);
+            yield break;
+        }
+        Texture2D content = DownloadHandlerTexture.GetContent(request);
+        Sprite sprite = Sprite.Create(content, new Rect(0f, 0f, content.width, content.height), new Vector2(0.5f, 0.5f));
+        avatarImage.sprite = sprite;
     }
 
     private void OnRegisterSuccess(RegisterPlayFabUserResult result)
@@ -245,7 +276,7 @@ public class PlayFabHANDLER : MonoBehaviour
             {
                 component2.text = item2.StatValue.ToString();
             }
-            
+            GetPlayerAvatar(item2.PlayFabId, component3);
         }
     }
 

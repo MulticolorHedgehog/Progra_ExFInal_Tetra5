@@ -181,7 +181,7 @@ public class WeatherAPIHandler : MonoBehaviour
                 lastIndex = cityIndex;
                 float latitud = Cordenadas[cityIndex].latitud;
                 float longitud = Cordenadas[cityIndex].longitud;
-                url = $"https://api.openweathermap.org/data/3.0/onecall?lat={latitude}&lon={longitude}&appid=7fe45acb4f5a69f83c45312aad97613a&units=metric";
+                url = $"https://api.openweathermap.org/data/3.0/onecall?lat={latitud}&lon={longitud}&appid=7fe45acb4f5a69f83c45312aad97613a&units=metric";
                 StartCoroutine(RetrieveWeatherData());
                 yield return new WaitForSecondsRealtime(90f);
             }
